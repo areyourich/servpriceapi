@@ -1,8 +1,8 @@
 {
   "openapi" : "3.0.3",
   "info" : {
-    "title" : "REST API Диагрупп",
-    "description" : "REST API приложения Диагрупп. Личный кабинет",
+    "title" : "REST API Диагрупп ServPrice",
+    "description" : "REST API приложения Диагрупп. Личный кабинет ServPrice",
     "version" : "1.0.0"
   },
   "servers" : [ {
