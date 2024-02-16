@@ -1,0 +1,320 @@
+{
+  "openapi" : "3.0.3",
+  "info" : {
+    "title" : "REST API Диагрупп",
+    "description" : "REST API приложения Диагрупп. Личный кабинет",
+    "version" : "1.0.0"
+  },
+  "servers" : [ {
+    "url" : "https://diagrouprb.ru/dglk/"
+  } ],
+  "tags" : [ {
+    "name" : "servs",
+    "description" : "Услуги и цены"
+  }, {
+    "name" : "auth",
+    "description" : "Авторизация"
+  } ],
+  "paths" : {
+    "/servs/prices" : {
+      "get" : {
+        "tags" : [ "servs" ],
+        "summary" : "Цены на услуги",
+        "description" : "Цены на улгуи",
+        "operationId" : "getServsPrices",
+        "parameters" : [ {
+          "name" : "date",
+          "in" : "query",
+          "description" : "На эту дату выводит цену. В формате гггг-мм-дд",
+          "required" : false,
+          "explode" : true,
+          "schema" : {
+            "type" : "string",
+            "format" : "date",
+            "example" : "2024-01-24"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Успешная операция",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "anyOf" : [ {
+                      "type" : "number",
+                      "example" : 1,
+                      "maximum" : 2,
+                      "minimum" : -99,
+                      "description" : "Результат шлюза. 1-ок. 2-нет данных. <=0 ошибки"
+                    }, {
+                      "type" : "object",
+                      "properties" : {
+                        "result" : {
+                          "type" : "integer",
+                          "format" : "int64",
+                          "maximum" : 2,
+                          "minimum" : -99,
+                          "description" : "Результат сервера. 1-ок. 2-нет данных. <=0 ошибки",
+                          "example" : 1
+                        },
+                        "data" : {
+                          "anyOf" : [ {
+                            "$ref" : "#/components/schemas/ServPrice"
+                          }, {
+                            "type" : "string",
+                            "example" : "Ошибка. Описание ошибки"
+                          } ]
+                        }
+                      }
+                    } ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ]
+      }
+    },
+    "/servs/{serv_id}/prices" : {
+      "get" : {
+        "tags" : [ "servs" ],
+        "summary" : "Цена на услугу",
+        "description" : "Цена на услугу",
+        "operationId" : "getServsPricesById",
+        "parameters" : [ {
+          "name" : "serv_id",
+          "in" : "path",
+          "description" : "id услуги",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "minimum" : 0
+          }
+        }, {
+          "name" : "date",
+          "in" : "query",
+          "description" : "На эту дату выводит цену. В формате гггг-мм-дд",
+          "required" : false,
+          "explode" : true,
+          "schema" : {
+            "type" : "string",
+            "format" : "date",
+            "example" : "2024-01-24"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Успешная операция",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "anyOf" : [ {
+                      "type" : "number",
+                      "example" : 1,
+                      "maximum" : 2,
+                      "minimum" : -99,
+                      "description" : "Результат шлюза. 1-ок. 2-нет данных. <=0 ошибки"
+                    }, {
+                      "type" : "object",
+                      "properties" : {
+                        "result" : {
+                          "type" : "integer",
+                          "format" : "int64",
+                          "maximum" : 2,
+                          "minimum" : -99,
+                          "description" : "Результат сервера. 1-ок. 2-нет данных. <=0 ошибки",
+                          "example" : 1
+                        },
+                        "data" : {
+                          "anyOf" : [ {
+                            "$ref" : "#/components/schemas/ServPrice"
+                          }, {
+                            "type" : "string",
+                            "example" : "Ошибка. Описание ошибки"
+                          } ]
+                        }
+                      }
+                    } ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ]
+      }
+    },
+    "/auth" : {
+      "post" : {
+        "tags" : [ "auth" ],
+        "summary" : "Авторизация",
+        "description" : "Авторизация",
+        "operationId" : "login",
+        "requestBody" : {
+          "content" : {
+            "application/x-www-form-urlencoded" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "user" : {
+                    "type" : "string",
+                    "description" : "Логин",
+                    "example" : "ecn5675"
+                  },
+                  "password" : {
+                    "type" : "string",
+                    "description" : "Пароль",
+                    "example" : "5eAdx4"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Успешная операция",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "anyOf" : [ {
+                      "type" : "integer",
+                      "example" : 1,
+                      "maximum" : 2,
+                      "minimum" : -99,
+                      "description" : "Результат. 1-ок. 2-нет данных. <=0 ошибки"
+                    }, {
+                      "oneOf" : [ {
+                        "type" : "object",
+                        "properties" : {
+                          "token" : {
+                            "type" : "string",
+                            "description" : "Токен авторизации",
+                            "example" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYmYiOjE3MDc4MDU1NTksImV4cCI6MTcxMDM5NzU1OSwidXNlciI6Im5hYzczNjMifQ.FAsP2w48CWED17FezdirgMI0Yox9F4oDhDsetatM91d"
+                          },
+                          "id" : {
+                            "type" : "integer",
+                            "format" : "int64",
+                            "minimum" : 1,
+                            "example" : 75
+                          },
+                          "login" : {
+                            "type" : "string",
+                            "example" : "ivanov"
+                          },
+                          "surname" : {
+                            "type" : "string",
+                            "description" : "Фамилия",
+                            "example" : "Иванов"
+                          },
+                          "name" : {
+                            "type" : "string",
+                            "description" : "Имя",
+                            "example" : "Иван"
+                          },
+                          "patron" : {
+                            "type" : "string",
+                            "description" : "Отчество",
+                            "example" : "Иванович"
+                          },
+                          "birth" : {
+                            "type" : "string",
+                            "format" : "date",
+                            "example" : "2000-01-24"
+                          },
+                          "phone" : {
+                            "type" : "string",
+                            "example" : "+7 (999) 999-99-99"
+                          },
+                          "pushtoken" : {
+                            "type" : "string"
+                          },
+                          "gender" : {
+                            "type" : "string",
+                            "enum" : [ "0", "1" ],
+                            "description" : "0-женщина, 1-мужчина"
+                          },
+                          "rights" : {
+                            "type" : "string",
+                            "format" : "number",
+                            "example" : "0"
+                          },
+                          "dms" : {
+                            "type" : "integer",
+                            "example" : 2
+                          },
+                          "patients_id" : {
+                            "type" : "integer",
+                            "example" : 215434
+                          }
+                        }
+                      }, {
+                        "type" : "string",
+                        "description" : "Описание ошибки",
+                        "example" : "Ошибка. Пользователь не найден"
+                      } ]
+                    } ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "ServPrice" : {
+        "type" : "object",
+        "properties" : {
+          "FM_SERV_ID" : {
+            "type" : "integer",
+            "format" : "int64",
+            "example" : 98
+          },
+          "CODE" : {
+            "type" : "string",
+            "example" : "125.14.100"
+          },
+          "LABEL" : {
+            "type" : "string",
+            "example" : "Прием терапевта"
+          },
+          "DISCOUNT_MOBILE" : {
+            "type" : "integer",
+            "nullable" : true,
+            "example" : 15
+          },
+          "DATE_FROM" : {
+            "type" : "string",
+            "format" : "date",
+            "example" : "2013-07-05T00:00:00.000Z"
+          },
+          "PRICE" : {
+            "type" : "number",
+            "example" : 387.12
+          }
+        }
+      }
+    },
+    "securitySchemes" : {
+      "bearerAuth" : {
+        "type" : "http",
+        "scheme" : "bearer",
+        "bearerFormat" : "JWT"
+      }
+    }
+  }
+}
