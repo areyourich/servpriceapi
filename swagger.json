@@ -61,7 +61,10 @@
                         },
                         "data" : {
                           "anyOf" : [ {
-                            "$ref" : "#/components/schemas/ServPrice"
+                            "type" : "array",
+                            "items" : {
+                              "$ref" : "#/components/schemas/ServPrice"
+                            }
                           }, {
                             "type" : "string",
                             "example" : "Ошибка. Описание ошибки"
